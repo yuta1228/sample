@@ -2,34 +2,21 @@
 definePageMeta({
   layout: 'test'
 })
-import {BasicShadowMap, SRGBColorSpace, NoToneMapping} from 'three';
 import {TresCanvas} from '@tresjs/core';
-import {OrbitControls, Text3D} from '@tresjs/cientos';
-import { useGLTF } from '@tresjs/cientos'
-
-// Orbit controls by extending
+import {OrbitControls} from '@tresjs/cientos';
 const {width, height} = defineProps(['width', 'height'])
 
-const gl = {
-  clearColor: '#82DBC5',
-  shadows: true,
-  alpha: false,
-  shadowMapType: BasicShadowMap,
-  outputColorSpace: SRGBColorSpace,
-  toneMapping: NoToneMapping,
-};
-
-const { scene } = await useLoader(GLTFLoader, '/models/AkuAku.gltf')
-
+const { scene } = await useGLTF('https://raw.githubusercontent.com/yuta1228/sample/main/sample/shiba/scene.gltf')
+// scene.children[0].geometry.center();
 </script>
 
 <template>
   <div id="view">
-    <TresCanvas v-bind="gl">
+    <TresCanvas clear-color="#F78B3D">
       <TresPerspectiveCamera :position="[4, 3, 9]"/>
       <OrbitControls/>
       <Suspense>
-        <Model />
+        <primitive :object="scene" />
       </Suspense>
       <TresDirectionalLight :position="[0, 2, 4]" :intensity="1.2" cast-shadow/>
       <TresGridHelper/>
@@ -40,8 +27,8 @@ const { scene } = await useLoader(GLTFLoader, '/models/AkuAku.gltf')
 <style>
 
 #view {
-  width: 400px;
-  height: 300px;
+  width: 600px;
+  height: 600px;
   background-color: #000;
 }
 </style>
